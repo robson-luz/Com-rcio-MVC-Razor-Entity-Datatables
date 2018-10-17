@@ -1,0 +1,49 @@
+﻿@model Comercio.ViewModel.Pedidos.PedidoViewModel
+
+<div class="container" style="margin-top: 30px">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Pedidos
+        </div>
+        <div class="panel-body">
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Data do Pedido</th>
+                        <th>Total</th>
+                        <th class="text-center">Ações</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @if (Model.Pedidos != null && Model.Pedidos.Count > 0)
+                    {
+                        foreach (var pedido in Model.Pedidos)
+                        {
+                            <tr>
+                                <td>
+                                    @pedido.IdPedido
+                                </td>
+                                <td>
+                                    @pedido.DataPedido
+                                </td>
+                                <td>
+                                    @pedido.ValorTotal
+                                </td>
+                                <td class="text-center">
+                                    @Html.ActionLink(" ", "DetalhesPedido", new { id = pedido.IdPedido }, new { @type = "button" , @class = "btn btn-sm btn-default glyphicon glyphicon-list" })
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr><td colspan="3">Não há pedidos cadastrados.<td></tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

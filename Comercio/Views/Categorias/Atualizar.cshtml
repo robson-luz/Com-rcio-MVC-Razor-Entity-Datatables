@@ -1,0 +1,36 @@
+﻿@model Comercio.ViewModel.Categorias.AtualizarCategoriaViewModel
+
+<div class="container" style="margin-top: 30px">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Atualizar Categoria
+        </div>
+        <div class="panel-body">
+
+            <span class="alert-danger">@Html.ValidationSummary()</span>
+
+            @using (Html.BeginForm())   
+            {
+                @Html.HiddenFor(c => c.IdCategoria)
+
+                <div class="row">
+                    <div class="col-md-12">
+                        @Html.LabelFor(c => c.Descricao, new { @class = "control-label" })
+                        @Html.TextBoxFor(c => c.Descricao,
+                                           new { @class = "form-control" })
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <label><span>  </span></label>
+                        <div class="form-group">
+                            @Html.ActionLink("Voltar", "Index", null, new { @class = "btn btn-default" })
+                            <button type="submit" class="btn btn-success">Salvar</button>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

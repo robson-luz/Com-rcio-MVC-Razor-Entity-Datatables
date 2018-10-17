@@ -1,0 +1,108 @@
+﻿@{
+    ViewBag.Title = "Consultar Categorias";
+}
+
+<div class="container-fluid" style="margin-top: 30px">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Categorias
+        </div>
+        <div class="panel-body">
+
+            @if (TempData["Success"] != null)
+            {
+                <div class="alert alert-success alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <span>@TempData["Success"]</span>
+                </div>
+            }
+
+            <div class="form-group">
+                @Html.ActionLink("Nova Categoria", "Cadastrar", null, new { @class = "btn btn-success" })
+            </div>
+
+            <table id="tbCategorias" class="table" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th class="no-sort">#</th>
+                        <th>Descrição</th>
+                        <th class="text-center no-sort">Ações</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    function remover(idCategoria) {
+
+        if (confirm("Deseja remover a categoria de Id " + idCategoria +"?")) {
+
+            var url = '@Url.Content("~/")' + "Categorias/Remover";
+            $.post(url, { idCategoria: idCategoria }, function (data) {
+                if (data.deletado) {
+                    oTable = $('#tbCategorias').DataTable();
+                    oTable.draw();
+                }
+                else {
+                    alert("Não foi possível remover categoria.");
+                }
+            });
+        }
+
+    }
+
+    $(document).ready(function () {
+        $.noConflict();
+
+        var oTable = $("#tbCategorias").DataTable({
+            "language": {
+                "processing": "Carregando...",
+                "lengthMenu": "Exibe _MENU_ Registros por página",
+                "search": "Descrição",
+                "info": "Exibindo _START_ a _END_ de _TOTAL_ registros.",
+                "infoPostFix": "",
+                "infoFiltered": "",
+                "infoEmpty": "",
+                "zeroRecords": "Nenhum registro encontrado.",
+                "paginate": {
+                    first: "«",
+                    previous: "‹",
+                    next: "›",
+                    last: "»"
+                }
+            },
+            "lengthMenu": [5, 10],
+            "pagingType": "full_numbers",
+            "processing": true, // mostrar a progress bar
+            "serverSide": true, // processamento no servidor
+            "filter": true,     // habilita o filtro(search box)
+            "pageLength": 5,    // define o tamanho da página,
+            "columnDefs": [{
+                "targets": 'no-sort',
+                "orderable": false,
+            }],
+            "order": [1, "asc"],
+            "ajax": {
+                "type": "POST",
+                "url": "/Categorias/Cadastradas",
+                "dataType": "json"
+            },
+            "columns": [
+                { "data": "idCategoria", "width": "10px" },
+                { "data": "descricao", "autowidth": true },
+                {
+                    "width": "70px",
+                    "render": function (data, type, full, meta) {
+                        return '<button class="btn btn-sm btn-default" onclick=location.href="/Categorias/Atualizar/?id=' + full.idCategoria + '" ><span class="glyphicon glyphicon-pencil"></span></button>' +
+                            '<button class="btn btn-sm btn-danger" onClick=remover(' + full.idCategoria + ') ><span class="glyphicon glyphicon-trash"></span></button> ';
+                    }
+                }
+            ]
+        });
+
+    });
+
+</script>

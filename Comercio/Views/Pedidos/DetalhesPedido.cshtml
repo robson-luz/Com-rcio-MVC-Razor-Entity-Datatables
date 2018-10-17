@@ -1,0 +1,59 @@
+﻿@model Comercio.Models.Pedidos.Pedido
+
+<div class="container" style="margin-top: 30px">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Detalhes Pedido
+        </div>
+        <div class="panel-body">
+
+            <b>Número Pedido:</b> @Model.IdPedido <br />
+            <b>Data do pedido</b> @Model.DataPedido <br />
+            <b>Valor Total:</b> @Model.ValorTotal <br /><br />
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Descrição</th>
+                        <th>Preço</th>
+                        <th>Quantidade</th>
+                        <th>Subtotal</th>
+                    </tr>
+                </thead>
+
+                @foreach (var item in Model.Itens)
+                {
+                    <tr>
+                        <td>
+                            @item.Produto.Descricao
+                        </td>
+                        <td>
+                            @item.Produto.Preco
+                        </td>
+                        <td>
+                            @item.Quantidade
+                        </td>
+                        <td>
+                            @item.Subtotal
+                        </td>
+                    </tr>
+                }
+
+                <tr>
+                    <td>
+                        <b>Total</b>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <b>@Model.ValorTotal</b>
+                    </td>
+                </tr>
+            </table>
+
+            <div class="form-group">
+                @Html.ActionLink("Voltar", "PedidosCadastrados", null, new { @class = "btn btn-default" })
+            </div>
+        </div>
+    </div>
+</div>

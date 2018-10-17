@@ -1,0 +1,81 @@
+﻿@model Comercio.ViewModel.Pedidos.PedidoViewModel
+
+<div class="container" style="margin-top: 30px">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Finalizar Pedido
+        </div>
+        <div class="panel-body">
+
+            <span class="alert-danger">@Html.ValidationSummary()</span>
+
+            @using (Html.BeginForm())
+            {
+                if (Model.Itens != null)
+                {
+
+                    decimal total = 0;
+
+                    <table class="table">
+                        <tr>
+                            <th>Descrição</th>
+                            <th>Preço</th>
+                            <th>Quantidade</th>
+                            <th>Subtotal</th>
+                            <th class="text-center no-sort">Ações</th>
+                        </tr>
+
+
+                        @for (int i = 0; i < Model.Itens.Count; i++)
+                        {
+                            var item = Model.Itens[i];
+
+                            total += (item.Preco * item.Quantidade);
+
+                            @Html.HiddenFor(m => m.Itens[i].IdProduto)
+
+                            <tr>
+                                <td>
+                                    @item.Descricao
+                                    @Html.HiddenFor(m => m.Itens[i].Descricao)
+                                </td>
+                                <td>
+                                    @item.Preco
+                                    @Html.HiddenFor(m => m.Itens[i].Preco)
+                                </td>
+                                <td>
+                                    @item.Quantidade
+                                    @Html.HiddenFor(m => m.Itens[i].Quantidade)
+                                </td>
+                                <td>
+                                    @(item.Preco * item.Quantidade)
+                                </td>
+                                <td class="text-center">
+                                    @Html.ActionLink(" ", "Remover", new { Index = Model.Itens.IndexOf(item) }, new { @type = "button", @class = "btn btn-sm btn-danger glyphicon glyphicon-trash" })
+                                </td>
+                            </tr>
+                        }
+
+                        <tr>
+                            <td colspan="3">
+                                <b>Total</b>
+                            </td>
+                            <td colspan="2">
+                                <b>@total</b>
+                            </td>
+                        </tr>
+
+                    </table>
+                }
+                <div class="form-group">
+                    @Html.ActionLink("Voltar", "Index", null, new { @class = "btn btn-default" })
+
+                    @if (Model.Itens != null)
+                    {
+                        <button type="submit" class="btn btn-success">Finalizar Pedido <span class="glyphicon glyphicon-shopping-cart"></span> </button>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+</div>

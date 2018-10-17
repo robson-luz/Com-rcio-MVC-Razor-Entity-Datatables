@@ -1,0 +1,44 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using System.Web.Routing;
+
+namespace Comercio
+{
+    public class RouteConfig
+    {
+        public static void RegisterRoutes(RouteCollection routes)
+        {
+            routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+
+            routes.MapRoute(
+                name: "Default",
+                url: "{controller}/{action}/{id}",
+                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+            );
+
+            routes.MapRoute(
+                name: "API",
+                url: "{controller}/{action}",
+                defaults: null,
+                constraints: new
+                {
+                    httpMethod = new HttpMethodConstraint("Post"),
+                });
+
+            routes.MapRoute(
+                name: "Index",
+                url: "{controller}/{action}",
+                defaults: new
+                {
+                    action = "Index"
+                },
+                constraints: new
+                {
+                    httpMethod = new HttpMethodConstraint("Get"),
+                });
+        }
+    }
+}

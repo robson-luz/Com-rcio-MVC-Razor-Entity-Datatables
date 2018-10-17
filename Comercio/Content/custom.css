@@ -1,0 +1,17 @@
+﻿
+.form-control {
+    max-width: none;
+}
+
+table {
+    width: 100%;
+}
+
+    table thead {
+        background-color: #222;
+        color: white;
+    }
+
+    table td, button {
+        margin-right: 3px;
+    }

@@ -1,0 +1,60 @@
+﻿@model Comercio.ViewModel.Produtos.CadastrarProdutoViewModel
+
+<div class="container" style="margin-top: 30px">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Cadastrar Produto
+        </div>
+        <div class="panel-body">
+
+            <span class="alert-danger">@Html.ValidationSummary()</span>
+
+            @using (Html.BeginForm("Cadastrar", "Produtos",
+    FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <div class="row">
+                    <div class="col-md-12">
+                        @Html.LabelFor(p => p.Descricao, new { @class = "control-label" })
+                        @Html.TextBoxFor(p => p.Descricao,
+                                           new { @class = "form-control" })
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        @Html.LabelFor(p => p.IdCategoria, new { @class = "control-label" })
+                        @Html.DropDownListFor(p => p.IdCategoria,
+                                           new SelectList(ViewBag.Categorias, "IdCategoria", "Descricao"),
+                                           "Selecione", new { @class = "form-control" })
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        @Html.LabelFor(p => p.Preco, new { @class = "control-label" })
+                        @Html.TextBoxFor(p => p.Preco,
+                                           new { @id = "preco", @class = "form-control" })
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <label><span>  </span></label>
+                        <div class="form-group">
+                            @Html.ActionLink("Voltar", "Index", null, new { @class = "btn btn-default" })
+                            <button type="submit" class="btn btn-success">Salvar</button>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $("#preco").mask('000000000,00', { reverse: true });
+        });
+    </script>
+}

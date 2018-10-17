@@ -1,0 +1,110 @@
+﻿@{
+    ViewBag.Title = "Consultar Produtos";
+}
+
+<div class="container-fluid" style="margin-top: 30px">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Produtos
+        </div>
+        <div class="panel-body">
+
+            @if (TempData["Success"] != null)
+            {
+                <div class="alert alert-success alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <span>@TempData["Success"]</span>
+                </div>
+            }
+
+            <div class="form-group">
+                @Html.ActionLink("Novo Produto", "Cadastrar", null, new { @class = "btn btn-success" })
+            </div>
+
+            <table id="tbProdutos" class="table" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th class="no-sort">#</th>
+                        <th>Descrição</th>
+                        <th class="no-sort">Categoria</th>
+                        <th class="no-sort">Preço</th>
+                        <th class="text-center no-sort">Ações</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    function remover(idProduto) {
+
+        if (confirm("Deseja remover o produto de Id " + idProduto +"?")) {
+
+            var url = '@Url.Content("~/")' + "Produtos/Remover";
+            $.post(url, { idProduto: idProduto }, function (data) {
+                if (data.deletado) {
+                    oTable = $('#tbProdutos').DataTable();
+                    oTable.draw();
+                }
+                else {
+                    alert("Não foi possível remover produto");
+                }
+            });
+        }
+
+    }
+
+    $(document).ready(function () {
+        $.noConflict();
+
+        var oTable = $("#tbProdutos").DataTable({
+            language: {
+                processing: "Carregando...",
+                lengthMenu: "Exibe _MENU_ Registros por página",
+                search: "Descrição",
+                info: "Exibindo _START_ a _END_ de _TOTAL_ registros.",
+                zeroRecords: "Nenhum registro encontrado.",
+                emptyTable: "Nenhum registro encontrado.",
+                paginate: {
+                    first: "«",
+                    previous: "‹",
+                    next: "›",
+                    last: "»"
+                }
+            },
+            lengthMenu: [5, 10],
+            pagingType: "full_numbers",
+            processing: true,
+            serverSide: true, 
+            filter: true,     
+            pageLength: 5,   
+            columnDefs: [{
+                targets: 'no-sort',
+                orderable: false,
+            }],
+            order: [1, "asc"],
+            ajax: {
+                type: "POST",
+                url: "/Produtos/Cadastrados",
+                dataType: "json"
+            },
+            columns: [
+                { data: "idProduto", "width": "10px" },
+                { data: "descricao", "autowidth": true },
+                { data: "categoria", "autowidth": true },
+                { data: "preco", "autowidth": true },
+                {
+                    width: "70px",
+                    render: function (data, type, full, meta) {
+                        return '<button class="btn btn-sm btn-default" onclick=location.href="/Produtos/Atualizar/?id=' + full.idProduto + '" ><span class="glyphicon glyphicon-pencil"></span></button>' +
+                            '<button class="btn btn-sm btn-danger" onClick=remover(' + full.idProduto + ') ><span class="glyphicon glyphicon-trash"></span></button> ';
+                    }
+                }
+            ]
+        });
+
+    });
+
+</script>
